@@ -55,6 +55,7 @@ func main() {
 	v1Router.Get("/health", handlerHealth)
 	v1Router.Get("/error", handlerErr)
 	v1Router.Post("/user", apiCfg.handlerCreateUser)
+	v1Router.Get("/me", apiCfg.handlerGetUserByAPIKey)
 
 	router.Mount("/v1", v1Router)
 
@@ -66,7 +67,7 @@ func main() {
 	log.Printf("Server starting on port %v", portString)
 	erro := srv.ListenAndServe()
 	if erro != nil {
-		log.Fatal(err)
+		log.Fatal(erro)
 	}
 
 }

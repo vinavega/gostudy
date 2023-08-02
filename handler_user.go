@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/vinavega/gostudy/internal/auth"
 	"github.com/vinavega/gostudy/internal/database"
-	"golang.org/x/crypto/bcrypt"
 )
 
 func (apiCfg *apiCOnfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
@@ -24,14 +24,8 @@ func (apiCfg *apiCOnfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	if params.Name == "" || params.Password == "" {
-		respondWithErr(w, 400, "Name or password cannot be empty")
-		return
-	}
-
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(params.Password), 8)
-	if err != nil {
-		respondWithErr(w, 400, "failed to hash password")
+	if params.Name == "" {
+		respondWithErr(w, 400, "Name cannot be empty")
 		return
 	}
 
@@ -40,10 +34,24 @@ func (apiCfg *apiCOnfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 		Name:      params.Name,
-		Password:  string(hashedPassword),
 	})
 	if err != nil {
 		respondWithErr(w, 400, fmt.Sprint("Error creating user", err))
+		return
+	}
+	respondWithJSON(w, 200, user)
+}
+
+func (apiCfg *apiCOnfig) handlerGetUserByAPIKey(w http.ResponseWriter, r *http.Request) {
+	apiKey, err := auth.GetAPIKey(r.Header)
+	if err != nil {
+		respondWithErr(w, 400, fmt.Sprint("erro ao extrais apikey do header ", err))
+		return
+	}
+
+	user, err := apiCfg.DB.GetUserByAPIKey(r.Context(), apiKey)
+	if err != nil {
+		respondWithErr(w, 400, fmt.Sprint("error getting api_key from database", err))
 		return
 	}
 	respondWithJSON(w, 200, user)
