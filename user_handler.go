@@ -7,11 +7,10 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/vinavega/gostudy/internal/auth"
 	"github.com/vinavega/gostudy/internal/database"
 )
 
-func (apiCfg *apiCOnfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
+func (apiCfg *apiCOnfig) HandlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name     string `json:"name"`
 		Password string `json:"password"`
@@ -39,20 +38,9 @@ func (apiCfg *apiCOnfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 		respondWithErr(w, 400, fmt.Sprint("Error creating user", err))
 		return
 	}
-	respondWithJSON(w, 200, user)
+	respondWithJSON(w, 200, databaseUserToUser(user))
 }
 
-func (apiCfg *apiCOnfig) handlerGetUserByAPIKey(w http.ResponseWriter, r *http.Request) {
-	apiKey, err := auth.GetAPIKey(r.Header)
-	if err != nil {
-		respondWithErr(w, 400, fmt.Sprint("erro ao extrais apikey do header ", err))
-		return
-	}
-
-	user, err := apiCfg.DB.GetUserByAPIKey(r.Context(), apiKey)
-	if err != nil {
-		respondWithErr(w, 400, fmt.Sprint("error getting api_key from database", err))
-		return
-	}
-	respondWithJSON(w, 200, user)
+func (apiCfg *apiCOnfig) HandlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
+	respondWithJSON(w, 200, databaseUserToUser(user))
 }
