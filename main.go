@@ -2,6 +2,8 @@ package main
 
 import (
 	"database/sql"
+	"gostudy/api/handlers"
+	"gostudy/internal/database"
 	"log"
 	"net/http"
 	"os"
@@ -10,7 +12,6 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	"github.com/vinavega/gostudy/internal/database"
 )
 
 type apiCOnfig struct {
@@ -52,7 +53,7 @@ func main() {
 	}))
 
 	v1Router := chi.NewRouter()
-	v1Router.Get("/health", HandlerHealth)
+	v1Router.Get("/health", handlers.HandlerHealth)
 	v1Router.Post("/user", apiCfg.HandlerCreateUser)
 	v1Router.Get("/me", apiCfg.MiddlewareAuth(apiCfg.HandlerGetUser))
 	v1Router.Post("/feed", apiCfg.MiddlewareAuth(apiCfg.HandlerCreateFeed))

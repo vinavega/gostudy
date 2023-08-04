@@ -3,11 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"gostudy/internal/database"
+	"gostudy/shared"
 	"net/http"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/vinavega/gostudy/internal/database"
 )
 
 func (apiCfg *apiCOnfig) HandlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
@@ -19,12 +20,12 @@ func (apiCfg *apiCOnfig) HandlerCreateFeed(w http.ResponseWriter, r *http.Reques
 	params := parameters{}
 	err := decoder.Decode(&params)
 	if err != nil {
-		respondWithErr(w, 400, fmt.Sprint("Error parsing JSON", err))
+		shared.RespondWithErr(w, 400, fmt.Sprint("Error parsing JSON", err))
 		return
 	}
 
 	if params.Name == "" || params.Url == "" {
-		respondWithErr(w, 400, "Name  or url cannot be empty")
+		shared.RespondWithErr(w, 400, "Name  or url cannot be empty")
 		return
 	}
 
@@ -37,8 +38,8 @@ func (apiCfg *apiCOnfig) HandlerCreateFeed(w http.ResponseWriter, r *http.Reques
 		UserID:    user.ID,
 	})
 	if err != nil {
-		respondWithErr(w, 400, fmt.Sprint("Error creating feed", err))
+		shared.RespondWithErr(w, 400, fmt.Sprint("Error creating feed", err))
 		return
 	}
-	respondWithJSON(w, 200, databaseFeedToFeed(feed))
+	shared.RespondWithJSON(w, 200, databaseFeedToFeed(feed))
 }

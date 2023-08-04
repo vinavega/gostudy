@@ -1,10 +1,10 @@
 package main
 
 import (
+	"gostudy/internal/database"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/vinavega/gostudy/internal/database"
 )
 
 type Feed struct {

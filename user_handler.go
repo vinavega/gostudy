@@ -3,11 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"gostudy/internal/database"
+	"gostudy/shared"
 	"net/http"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/vinavega/gostudy/internal/database"
 )
 
 func (apiCfg *apiCOnfig) HandlerCreateUser(w http.ResponseWriter, r *http.Request) {
@@ -19,12 +20,12 @@ func (apiCfg *apiCOnfig) HandlerCreateUser(w http.ResponseWriter, r *http.Reques
 	params := parameters{}
 	err := decoder.Decode(&params)
 	if err != nil {
-		respondWithErr(w, 400, fmt.Sprint("Error parsing JSON", err))
+		shared.RespondWithErr(w, 400, fmt.Sprint("Error parsing JSON", err))
 		return
 	}
 
 	if params.Name == "" {
-		respondWithErr(w, 400, "Name cannot be empty")
+		shared.RespondWithErr(w, 400, "Name cannot be empty")
 		return
 	}
 
@@ -35,12 +36,12 @@ func (apiCfg *apiCOnfig) HandlerCreateUser(w http.ResponseWriter, r *http.Reques
 		Name:      params.Name,
 	})
 	if err != nil {
-		respondWithErr(w, 400, fmt.Sprint("Error creating user", err))
+		shared.RespondWithErr(w, 400, fmt.Sprint("Error creating user", err))
 		return
 	}
-	respondWithJSON(w, 200, databaseUserToUser(user))
+	shared.RespondWithJSON(w, 200, databaseUserToUser(user))
 }
 
 func (apiCfg *apiCOnfig) HandlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
-	respondWithJSON(w, 200, databaseUserToUser(user))
+	shared.RespondWithJSON(w, 200, databaseUserToUser(user))
 }
