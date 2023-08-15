@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gostudy/internal/database"
 	"gostudy/shared"
+	"gostudy/utils"
 	"net/http"
 	"time"
 
@@ -41,5 +42,5 @@ func (apiCfg *apiCOnfig) HandlerCreateFeed(w http.ResponseWriter, r *http.Reques
 		shared.RespondWithErr(w, 400, fmt.Sprint("Error creating feed", err))
 		return
 	}
-	shared.RespondWithJSON(w, 200, databaseFeedToFeed(feed))
+	shared.RespondWithJSON(w, 200, utils.DatabaseFeedToFeed(feed))
 }

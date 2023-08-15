@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gostudy/internal/database"
 	"gostudy/shared"
+	"gostudy/utils"
 	"net/http"
 	"time"
 
@@ -39,9 +40,9 @@ func (apiCfg *apiCOnfig) HandlerCreateUser(w http.ResponseWriter, r *http.Reques
 		shared.RespondWithErr(w, 400, fmt.Sprint("Error creating user", err))
 		return
 	}
-	shared.RespondWithJSON(w, 200, databaseUserToUser(user))
+	shared.RespondWithJSON(w, 200, utils.DatabaseUserToUser(user))
 }
 
 func (apiCfg *apiCOnfig) HandlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
-	shared.RespondWithJSON(w, 200, databaseUserToUser(user))
+	shared.RespondWithJSON(w, 200, utils.DatabaseUserToUser(user))
 }

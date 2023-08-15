@@ -14,7 +14,7 @@ func (apiCfg *apiCOnfig) MiddlewareAuth(handler authedHandler) http.HandlerFunc 
 	return func(w http.ResponseWriter, r *http.Request) {
 		apiKey, err := auth.GetAPIKey(r.Header)
 		if err != nil {
-			shared.RespondWithErr(w, 400, fmt.Sprint("erro ao extrais apikey do header ", err))
+			shared.RespondWithErr(w, 400, fmt.Sprint("erro ao extrair apikey do header ", err))
 			return
 		}
 

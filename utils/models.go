@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"gostudy/internal/database"
@@ -24,10 +24,10 @@ type User struct {
 	ApiKey    string    `json:"api_key"`
 }
 
-func databaseFeedToFeed(dbFeed database.Feed) Feed {
+func DatabaseFeedToFeed(dbFeed database.Feed) Feed {
 	return Feed(dbFeed)
 }
 
-func databaseUserToUser(dbUser database.User) User {
+func DatabaseUserToUser(dbUser database.User) User {
 	return User(dbUser)
 }
