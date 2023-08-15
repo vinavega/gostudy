@@ -1,7 +1,8 @@
-package main
+package middleware
 
 import (
 	"fmt"
+	"gostudy/db"
 	"gostudy/internal/auth"
 	"gostudy/internal/database"
 	"gostudy/shared"
@@ -10,7 +11,9 @@ import (
 
 type authedHandler func(http.ResponseWriter, *http.Request, database.User)
 
-func (apiCfg *apiCOnfig) MiddlewareAuth(handler authedHandler) http.HandlerFunc {
+type AuthCfg db.ApiCOnfig
+
+func (apiCfg *AuthCfg) MiddlewareAuth(handler authedHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		apiKey, err := auth.GetAPIKey(r.Header)
 		if err != nil {

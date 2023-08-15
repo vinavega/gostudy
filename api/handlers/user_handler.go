@@ -1,8 +1,9 @@
-package main
+package handlers
 
 import (
 	"encoding/json"
 	"fmt"
+	"gostudy/db"
 	"gostudy/internal/database"
 	"gostudy/shared"
 	"gostudy/utils"
@@ -12,7 +13,9 @@ import (
 	"github.com/google/uuid"
 )
 
-func (apiCfg *apiCOnfig) HandlerCreateUser(w http.ResponseWriter, r *http.Request) {
+type UserCfg db.ApiCOnfig
+
+func (apiCfg *UserCfg) HandlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name     string `json:"name"`
 		Password string `json:"password"`
@@ -43,6 +46,6 @@ func (apiCfg *apiCOnfig) HandlerCreateUser(w http.ResponseWriter, r *http.Reques
 	shared.RespondWithJSON(w, 200, utils.DatabaseUserToUser(user))
 }
 
-func (apiCfg *apiCOnfig) HandlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
+func (apiCfg *UserCfg) HandlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
 	shared.RespondWithJSON(w, 200, utils.DatabaseUserToUser(user))
 }

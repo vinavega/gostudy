@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"gostudy/api/handlers"
 	"gostudy/internal/database"
+	"gostudy/middleware"
 	"log"
 	"net/http"
 	"os"
@@ -13,10 +14,6 @@ import (
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
-
-type apiCOnfig struct {
-	DB *database.Queries
-}
 
 func main() {
 
@@ -37,7 +34,15 @@ func main() {
 		log.Fatal("Could not connect to Postgres Database")
 	}
 
-	apiCfg := apiCOnfig{
+	userCfg := handlers.UserCfg{
+		DB: database.New(conn),
+	}
+
+	feedCfg := handlers.FeedCfg{
+		DB: database.New(conn),
+	}
+
+	authCfg := middleware.AuthCfg{
 		DB: database.New(conn),
 	}
 
@@ -54,9 +59,9 @@ func main() {
 
 	v1Router := chi.NewRouter()
 	v1Router.Get("/health", handlers.HandlerHealth)
-	v1Router.Post("/user", apiCfg.HandlerCreateUser)
-	v1Router.Get("/me", apiCfg.MiddlewareAuth(apiCfg.HandlerGetUser))
-	v1Router.Post("/feed", apiCfg.MiddlewareAuth(apiCfg.HandlerCreateFeed))
+	v1Router.Post("/user", userCfg.HandlerCreateUser)
+	v1Router.Get("/me", authCfg.MiddlewareAuth(userCfg.HandlerGetUser))
+	v1Router.Post("/feed", authCfg.MiddlewareAuth(feedCfg.HandlerCreateFeed))
 
 	router.Mount("/v1", v1Router)
 

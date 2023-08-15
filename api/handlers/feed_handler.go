@@ -1,8 +1,9 @@
-package main
+package handlers
 
 import (
 	"encoding/json"
 	"fmt"
+	"gostudy/db"
 	"gostudy/internal/database"
 	"gostudy/shared"
 	"gostudy/utils"
@@ -12,7 +13,9 @@ import (
 	"github.com/google/uuid"
 )
 
-func (apiCfg *apiCOnfig) HandlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
+type FeedCfg db.ApiCOnfig
+
+func (apiCfg *FeedCfg) HandlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
 	type parameters struct {
 		Name string `json:"name"`
 		Url  string `json:"url"`
