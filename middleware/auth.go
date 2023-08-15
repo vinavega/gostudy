@@ -2,16 +2,16 @@ package middleware
 
 import (
 	"fmt"
-	"gostudy/db"
 	"gostudy/internal/auth"
 	"gostudy/internal/database"
 	"gostudy/shared"
+	"gostudy/utils"
 	"net/http"
 )
 
 type authedHandler func(http.ResponseWriter, *http.Request, database.User)
 
-type AuthCfg db.ApiCOnfig
+type AuthCfg utils.ApiCOnfig
 
 func (apiCfg *AuthCfg) MiddlewareAuth(handler authedHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

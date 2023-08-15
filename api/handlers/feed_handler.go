@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"gostudy/db"
 	"gostudy/internal/database"
 	"gostudy/shared"
 	"gostudy/utils"
@@ -13,7 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type FeedCfg db.ApiCOnfig
+type FeedCfg utils.ApiCOnfig
 
 func (apiCfg *FeedCfg) HandlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
 	type parameters struct {

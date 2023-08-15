@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"gostudy/db"
 	"gostudy/internal/database"
 	"gostudy/shared"
 	"gostudy/utils"
@@ -13,7 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type UserCfg db.ApiCOnfig
+type UserCfg utils.ApiCOnfig
 
 func (apiCfg *UserCfg) HandlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
